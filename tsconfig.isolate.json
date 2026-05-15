@@ -1,0 +1,18 @@
+{
+  "extends": "@any-listen/extension-kit/tsconfig.isolate.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "typeRoots": ["./src/types", "./src/isolate-preload/types"]
+  },
+  "include": [
+    "./src/isolate-preload/**/*.d.ts",
+    "./src/isolate-preload/**/*.ts",
+    "./src/isolate-preload/**/*.js",
+    "./src/isolate-preload/**/*.mjs",
+    "./src/types/**/*.d.ts"
+  ]
+}
