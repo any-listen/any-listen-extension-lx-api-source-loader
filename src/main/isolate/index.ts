@@ -18,7 +18,7 @@ const createIsolate = async (scriptInfo: LXScriptInfoFull) => {
               .map(([k, v]) => `${k}: ${v.join('|')}`)
               .join('; ')}`
           )
-          void app.showMessage(t('isolate.loadScriptSuccess', { name: scriptInfo.name || scriptInfo.fileName }))
+          // void app.showMessage(t('isolate.loadScriptSuccess', { name: scriptInfo.name || scriptInfo.fileName }))
         } else {
           console.error(
             `[${scriptInfo.name}]Init failed: ${JSON.stringify(info)}${errorMessage ? `\nError: ${errorMessage}` : ''}`

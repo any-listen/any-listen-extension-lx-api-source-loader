@@ -1,1 +1,1 @@
-First version
+remove init success tip

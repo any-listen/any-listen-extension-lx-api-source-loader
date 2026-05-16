@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { configuration, crypto, storage, t } from './hostAPI'
 
 const INFO_NAMES = {
