@@ -13,10 +13,10 @@
     "message2call": "^2.0.3"
   },
   "devDependencies": {
-    "@any-listen/extension-kit": "^0.1.8",
+    "@any-listen/extension-kit": "^0.1.9",
     "@types/node": "^25.8.0",
     "eslint": "^9.39.4",
-    "oxfmt": "^0.49.0"
+    "oxfmt": "^0.50.0"
   },
   "engines": {
     "node": ">= 22"

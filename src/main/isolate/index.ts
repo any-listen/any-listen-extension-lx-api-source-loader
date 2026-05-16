@@ -137,16 +137,23 @@ export const runScript = async (id: string, scriptInfo: LXScriptInfoFull, script
   })
 }
 
+const types: AnyListen_API.Quality[] = ['128k', '192k', '320k', 'wav', 'flac', 'flac24bit', 'dolby', 'master']
+const getTargetScriptByQuality = (musicInfo: AnyListen_API.MusicInfoOnline, type: string, excludeIds: string[] = []) => {
+  let targetScript = scripts.find((s) => s.sources?.[musicInfo.meta.source]?.includes(type) && !excludeIds.includes(s.id))
+  if (targetScript) return [targetScript, type] as const
+  const idx = types.indexOf(type as AnyListen_API.Quality) - 1
+  if (idx < 0) throw new Error('No script found to handle this request')
+  return getTargetScriptByQuality(musicInfo, types[idx], excludeIds)
+}
 export const getMusicUrl = async (
   musicInfo: AnyListen_API.MusicInfoOnline,
   type: string,
   excludeIds: string[] = []
 ): Promise<string> => {
-  const targetScript = scripts.find((s) => s.sources?.[musicInfo.meta.source]?.includes(type) && !excludeIds.includes(s.id))
-  if (!targetScript) throw new Error('No script found to handle this request')
-  return targetScript.getMusicUrl(musicInfo, type).catch(async (error) => {
+  const [targetScript, targetType] = getTargetScriptByQuality(musicInfo, type, excludeIds)
+  return targetScript.getMusicUrl(musicInfo, targetType).catch(async (error) => {
     console.error(
-      `[${targetScript.info.name || targetScript.info.fileName} - ${musicInfo.name}(${musicInfo.meta.source}, type: ${type})] ${(error as Error).message}`
+      `[${targetScript.info.name || targetScript.info.fileName} - ${musicInfo.name}(${musicInfo.meta.source}, type: ${targetType})] ${(error as Error).message}`
     )
     return getMusicUrl(musicInfo, type, [...excludeIds, targetScript.id])
   })

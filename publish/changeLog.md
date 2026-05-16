@@ -1,2 +1,1 @@
-- add script log output option
-- fix environment api
+- supports audio quality downgrading
