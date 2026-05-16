@@ -23,4 +23,10 @@ export const exposeObject: Partial<IPCExtensionObject> = {
   async error(...args) {
     console.error(...args)
   },
+  async warn(...args) {
+    console.warn(...args)
+  },
+  async debug(...args) {
+    console.debug(...args)
+  },
 }

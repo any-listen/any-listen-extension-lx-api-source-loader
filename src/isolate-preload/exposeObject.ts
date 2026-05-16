@@ -1,4 +1,5 @@
 import { setupEnv } from './setupEnv'
+import { setEnabledSourceLogout } from './utils'
 
 let handler: (musicInfo: any, type: string) => Promise<string>
 
@@ -8,7 +9,6 @@ export const setMusicUrlHandler = (_handler: (musicInfo: any, type: string) => P
 export const exposeObject: IPCIsolateObject = {
   async getMusicUrl(musicInfo, type) {
     // console.log('getMusicUrl', musicInfo, type)
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!handler) {
       throw new Error('Handler not set')
     }
@@ -16,5 +16,8 @@ export const exposeObject: IPCIsolateObject = {
   },
   async setupEnv(info, rawScript) {
     setupEnv(info, rawScript)
+  },
+  async setEnabledSourceLogout(enabled) {
+    setEnabledSourceLogout(enabled)
   },
 }

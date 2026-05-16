@@ -26,6 +26,13 @@ const config: ExtensionConfig = {
         default: false,
       },
       {
+        field: 'enabledSourceLogout',
+        name: '{settings.enabledSourceLogout}',
+        description: '{settings.enabledSourceLogoutDescription}',
+        type: 'boolean',
+        default: false,
+      },
+      {
         field: 'enabledScripts',
         name: '{settings.scriptSources}',
         description: '{settings.scriptSourcesDescription}',

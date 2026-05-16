@@ -4,6 +4,8 @@ const api = require('any-listen')
 export const console = {
   log: api.logcat.info,
   error: api.logcat.error,
+  warn: api.logcat.warn,
+  debug: api.logcat.debug,
 }
 
 export const registerResourceAction = api.registerResourceAction

@@ -74,7 +74,11 @@ const toLXMusicInfo = (minfo: AnyListen_API.MusicInfoOnline): unknown => {
     typeUrl: {},
   }
   oInfo.albumId = minfo.meta.albumId
-  oInfo.types = minfo.meta.qualitys
+  oInfo.types = Object.fromEntries(
+    (Object.entries(minfo.meta.qualitys ?? {}) as Array<[string, { sizeStr?: string; [key: string]: unknown }]>).map(
+      ([key, { sizeStr, ...val }]) => [key, sizeStr == null ? val : { ...val, size: sizeStr }]
+    )
+  )
 
   switch (minfo.meta.source) {
     case 'kg':
@@ -100,12 +104,14 @@ export const scripts: Array<{
   id: string
   destroy: () => Promise<void>
   getMusicUrl: (musicInfo: AnyListen_API.MusicInfoOnline, type: string) => Promise<string>
+  setEnabledSourceLogout: (enabled: boolean) => Promise<void>
   sources: Record<string, string[]> | null
   info: LXScriptInfoFull
 }> = []
 
-export const runScript = async (id: string, scriptInfo: LXScriptInfoFull, script: string) => {
+export const runScript = async (id: string, scriptInfo: LXScriptInfoFull, script: string, enabledSourceLogout: boolean) => {
   const isolate = await createIsolate(scriptInfo)
+  await isolate.remote.setEnabledSourceLogout(enabledSourceLogout)
   await isolate.remote.setupEnv(scriptInfo, script)
   await isolate.runScript(script)
 
@@ -121,6 +127,9 @@ export const runScript = async (id: string, scriptInfo: LXScriptInfoFull, script
     },
     getMusicUrl: async (musicInfo: AnyListen_API.MusicInfoOnline, type: string) => {
       return isolate.remote.getMusicUrl(toLXMusicInfo(musicInfo), type)
+    },
+    setEnabledSourceLogout: async (enabled) => {
+      await isolate.remote.setEnabledSourceLogout(enabled)
     },
     get sources() {
       return isolate.sources
@@ -141,4 +150,10 @@ export const getMusicUrl = async (
     )
     return getMusicUrl(musicInfo, type, [...excludeIds, targetScript.id])
   })
+}
+
+export const updateEnabledSourceLogout = async (enabled: boolean) => {
+  for (const script of scripts) {
+    await script.setEnabledSourceLogout(enabled)
+  }
 }

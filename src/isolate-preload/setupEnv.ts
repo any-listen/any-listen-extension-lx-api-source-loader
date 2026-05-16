@@ -1,5 +1,6 @@
 import { setMusicUrlHandler } from './exposeObject'
 import { ipc } from './extensionObject'
+import { setScriptInfo } from './utils'
 import { fromUint8Array, toUint8Array } from './vendors/base64'
 import md5 from './vendors/md5'
 
@@ -8,6 +9,7 @@ declare global {
 }
 
 export const setupEnv = (scriptInfo: Omit<LXScriptInfo, 'id'>, rawScript: string) => {
+  setScriptInfo(scriptInfo)
   const EVENT_NAMES = {
     request: 'request',
     inited: 'inited',

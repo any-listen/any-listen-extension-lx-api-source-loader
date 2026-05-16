@@ -1,5 +1,5 @@
 import { initCommand } from './command'
-import { runScript, scripts } from './isolate'
+import { runScript, scripts, updateEnabledSourceLogout } from './isolate'
 import { initOnlineResource } from './onlineResource'
 import { app, configuration, console, t } from './shared/hostAPI'
 import { checkFiles, getScript } from './shared/lxSourceManage'
@@ -7,10 +7,9 @@ import { checkFiles, getScript } from './shared/lxSourceManage'
 void initOnlineResource()
 
 const initScripts = async () => {
-  const [config = [], infos = []] = await configuration.getConfigs<[string[], LXScriptInfoFull[]]>([
-    'enabledScripts',
-    'importedScriptSources',
-  ])
+  let [config = [], infos = [], enabledSourceLogout = false] = await configuration.getConfigs<
+    [string[], LXScriptInfoFull[], boolean]
+  >(['enabledScripts', 'importedScriptSources', 'enabledSourceLogout'])
 
   void checkFiles(infos)
 
@@ -29,7 +28,7 @@ const initScripts = async () => {
     }
     try {
       const script = await getScript(info.id)
-      await runScript(info.id, info, script)
+      await runScript(info.id, info, script, enabledSourceLogout)
     } catch (error) {
       console.error(t('error.loadScriptFailed', { name: info.name || info.id, message: (error as Error).message }))
       void app.showMessage(t('error.loadScriptFailed', { name: info.name || info.id, message: (error as Error).message }), {
@@ -39,36 +38,43 @@ const initScripts = async () => {
   }
 
   configuration.onConfigChanged(async (keys, newConfig) => {
-    if (!keys.includes('enabledScripts')) return
-    const newEnabledIds = (newConfig.enabledScripts as string[] | null) || []
-    const enabledIds: string[] = []
-    for (const script of scripts) {
-      if (newEnabledIds.includes(script.id)) {
-        enabledIds.push(script.id)
-        continue
-      }
-      await script.destroy().catch(() => {})
+    if (keys.includes('enabledSourceLogout')) {
+      enabledSourceLogout = (newConfig.enabledSourceLogout as boolean) || false
+      await updateEnabledSourceLogout(enabledSourceLogout)
     }
-    const infos = (await configuration.getConfigs<[LXScriptInfoFull[]]>(['importedScriptSources']))[0] ?? []
-    for (const id of newEnabledIds) {
-      if (enabledIds.includes(id)) continue
-      const targetInfo = infos.find((info) => info.id === id)
-      if (!targetInfo) {
-        console.error(`No script info found for id ${id}`)
-        continue
+    if (keys.includes('enabledScripts')) {
+      const newEnabledIds = (newConfig.enabledScripts as string[] | null) || []
+      const enabledIds: string[] = []
+      for (const script of scripts) {
+        if (newEnabledIds.includes(script.id)) {
+          enabledIds.push(script.id)
+          continue
+        }
+        await script.destroy().catch(() => {})
       }
-      try {
-        const script = await getScript(id)
-        await runScript(targetInfo.id, targetInfo, script)
-        // console.log(`Loaded script ${targetInfo.name || targetInfo.id} successfully`)
-      } catch (error) {
-        console.error(t('error.loadScriptFailed', { name: targetInfo.name || targetInfo.id, message: (error as Error).message }))
-        void app.showMessage(
-          t('error.loadScriptFailed', { name: targetInfo.name || targetInfo.id, message: (error as Error).message }),
-          {
-            type: 'error',
-          }
-        )
+      const infos = (await configuration.getConfigs<[LXScriptInfoFull[]]>(['importedScriptSources']))[0] ?? []
+      for (const id of newEnabledIds) {
+        if (enabledIds.includes(id)) continue
+        const targetInfo = infos.find((info) => info.id === id)
+        if (!targetInfo) {
+          console.error(`No script info found for id ${id}`)
+          continue
+        }
+        try {
+          const script = await getScript(id)
+          await runScript(targetInfo.id, targetInfo, script, enabledSourceLogout)
+          // console.log(`Loaded script ${targetInfo.name || targetInfo.id} successfully`)
+        } catch (error) {
+          console.error(
+            t('error.loadScriptFailed', { name: targetInfo.name || targetInfo.id, message: (error as Error).message })
+          )
+          void app.showMessage(
+            t('error.loadScriptFailed', { name: targetInfo.name || targetInfo.id, message: (error as Error).message }),
+            {
+              type: 'error',
+            }
+          )
+        }
       }
     }
   })

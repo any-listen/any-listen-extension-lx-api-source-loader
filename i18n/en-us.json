@@ -29,6 +29,8 @@
   "settings.addRemoteSource": "Import online custom sources",
   "settings.enabledCache": "Enable song cache",
   "settings.enabledCacheDescription": "When a song link is successfully retrieved, the song will also be cached in the cache directory",
+  "settings.enabledSourceLogout": "Enable source log output",
+  "settings.enabledSourceLogoutDescription": "Log output from the source",
   "settings.scriptSources": "custom source",
   "settings.scriptSourcesDescription": "Configure LX Music custom sources to be enabled, priority will be determined based on the order of enablement",
   "txName": "Tencent",

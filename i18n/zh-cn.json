@@ -29,6 +29,8 @@
   "settings.addRemoteSource": "导入在线自定义源",
   "settings.enabledCache": "启用歌曲缓存",
   "settings.enabledCacheDescription": "当歌曲链接获取成功时，同时将歌曲缓存到缓存目录",
+  "settings.enabledSourceLogout": "启用源日志输出",
+  "settings.enabledSourceLogoutDescription": "记录源输出的日志",
   "settings.scriptSources": "自定义源",
   "settings.scriptSourcesDescription": "配置要启用的 LX Music 自定义源，优先级将根据启用的顺序来确定",
   "txName": "企鹅音乐",

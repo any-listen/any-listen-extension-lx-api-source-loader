@@ -16,6 +16,7 @@ declare global {
   interface IPCIsolateObject {
     setupEnv: (scriptInfo: LXScriptInfo, rawScript: string) => Promise<void>
     getMusicUrl: (musicInfo: unknown, type: string) => Promise<string>
+    setEnabledSourceLogout: (enabled: boolean) => Promise<void>
   }
   interface IPCEXtensionRequestOptions {
     url: string
@@ -41,6 +42,8 @@ declare global {
     }>
     log: (...args: unknown[]) => Promise<void>
     error: (...args: unknown[]) => Promise<void>
+    warn: (...args: unknown[]) => Promise<void>
+    debug: (...args: unknown[]) => Promise<void>
 
     inited: (info: Record<string, string[]> | null, status: boolean, errorMessage?: string) => Promise<void>
     showUpdateAlert: (log: string, updateUrl?: string) => Promise<void>

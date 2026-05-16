@@ -1,1 +1,2 @@
-remove init success tip
+- add script log output option
+- fix environment api
