@@ -11,7 +11,7 @@
   "command.exportSourcesDialogTitle": "Select export location",
   "command.exportSourcesName": "Export all custom sources",
   "command.exportSourcesNoSources": "No sources to export",
-  "description": "Script for loading LX Music music source",
+  "description": "Used to load LX Music custom source script",
   "error.addLocalSourceFailed": "Failed to add \"{name}\": {message}",
   "error.addRemoteSourceFailed": "Import failed: {message}",
   "error.duplicateScript": "Import failed, \"{fileName}\" and \"{name}\" are duplicates",

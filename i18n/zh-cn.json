@@ -11,7 +11,7 @@
   "command.exportSourcesDialogTitle": "选择导出位置",
   "command.exportSourcesName": "导出所有自定义源",
   "command.exportSourcesNoSources": "没有可导出的源",
-  "description": "用于加载 LX Music 音乐源脚本",
+  "description": "用于加载 LX Music 自定义源脚本",
   "error.addLocalSourceFailed": "添加「{name}」失败：{message}",
   "error.addRemoteSourceFailed": "导入失败：{message}",
   "error.duplicateScript": "导入失败，「{fileName}」与「{name}」重复",
