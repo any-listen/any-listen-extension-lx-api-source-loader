@@ -1,1 +1,1 @@
-- supports audio quality downgrading
+- add log output
