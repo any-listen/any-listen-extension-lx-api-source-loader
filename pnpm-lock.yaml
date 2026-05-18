@@ -13,8 +13,8 @@ importers:
         version: 2.0.3
     devDependencies:
       '@any-listen/extension-kit':
-        specifier: ^0.1.9
-        version: 0.1.9(@types/node@25.8.0)(eslint@9.39.4)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)
+        specifier: ^0.1.10
+        version: 0.1.10(@types/node@25.8.0)(eslint@9.39.4)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)
       '@types/node':
         specifier: ^25.8.0
         version: 25.8.0
@@ -27,8 +27,8 @@ importers:
 
 packages:
 
-  '@any-listen/extension-kit@0.1.9':
-    resolution: {integrity: sha512-UD2eAZIeu2Zt5tulN0M4GJt/94AY12aJ/Y795CgsgMbn45BcJ6twCMzJ7sJOhUjY7I0eFQ3PjFsIokPEyFfohA==}
+  '@any-listen/extension-kit@0.1.10':
+    resolution: {integrity: sha512-Hec1avOnxuc27m9l22kcpNQyhbjzOxcarZS2AFtaqMDm886etssQI+ZDbxGklcwb0Uy0GGlRiFu1jScpxTZ5+w==}
     hasBin: true
     peerDependencies:
       eslint: ^9.39.4
@@ -1544,7 +1544,7 @@ packages:
 
 snapshots:
 
-  '@any-listen/extension-kit@0.1.9(@types/node@25.8.0)(eslint@9.39.4)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)':
+  '@any-listen/extension-kit@0.1.10(@types/node@25.8.0)(eslint@9.39.4)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)':
     dependencies:
       '@eslint/js': 9.39.4
       '@tsconfig/node24': 24.0.4

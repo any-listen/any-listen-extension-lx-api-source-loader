@@ -2,6 +2,7 @@ import { createMessage2Call } from 'message2call'
 
 import { EXTENSION } from '../shared/constants'
 import { app, console, createIsolateContext, t } from '../shared/hostAPI'
+import { verifyUrl } from '../shared/utils'
 import { exposeObject } from './exposeObject'
 
 const createIsolate = async (scriptInfo: LXScriptInfoFull) => {
@@ -151,12 +152,18 @@ export const getMusicUrl = async (
   excludeIds: string[] = []
 ): Promise<string> => {
   const [targetScript, targetType] = getTargetScriptByQuality(musicInfo, type, excludeIds)
-  return targetScript.getMusicUrl(musicInfo, targetType).catch(async (error) => {
-    console.error(
-      `[${targetScript.info.name || targetScript.info.fileName} - ${musicInfo.name}(${musicInfo.meta.source}, type: ${targetType})] ${(error as Error).message}`
-    )
-    return getMusicUrl(musicInfo, type, [...excludeIds, targetScript.id])
-  })
+  return targetScript
+    .getMusicUrl(musicInfo, targetType)
+    .then(async (url) => {
+      url = await verifyUrl(url)
+      return url
+    })
+    .catch(async (error) => {
+      console.error(
+        `[${targetScript.info.name || targetScript.info.fileName} - ${musicInfo.name}(${musicInfo.meta.source}, type: ${targetType})] ${(error as Error).message}`
+      )
+      return getMusicUrl(musicInfo, type, [...excludeIds, targetScript.id])
+    })
 }
 
 export const updateEnabledSourceLogout = async (enabled: boolean) => {

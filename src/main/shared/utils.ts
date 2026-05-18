@@ -1,3 +1,5 @@
+import { request } from './hostAPI'
+
 export * from './common'
 
 // https://stackoverflow.com/a/53387532
@@ -36,4 +38,19 @@ export const deduplicationList = <T extends AnyListen_API.MusicInfo>(list: T[]):
     ids.add(s.id)
     return true
   })
+}
+
+export const verifyUrl = async (url: string, opts: AnyListen_API.RequestOptions = {}) => {
+  const resp = await request(url, {
+    ...opts,
+    headers: {
+      ...(opts.headers ?? {}),
+      Range: 'bytes=0-1',
+    },
+    needRaw: true,
+  })
+  if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode >= 300) {
+    throw new Error(`verify proxy request failed: [${url}] ${resp.statusCode}`)
+  }
+  return resp.history[resp.history.length - 1]
 }
