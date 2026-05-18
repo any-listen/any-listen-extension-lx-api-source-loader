@@ -10,7 +10,7 @@ const config: ExtensionConfig = {
   homepage: pkg.homepage,
   license: pkg.license,
   author: pkg.author,
-  target_engine: '1.1.2',
+  target_engine: '1.2.1',
   categories: [],
   tags: [],
   download_url_template: 'https://github.com/any-listen/any-listen-extension-lx-api-source-loader/releases/download/v{version}',
